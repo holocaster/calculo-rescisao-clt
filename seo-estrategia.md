@@ -64,8 +64,11 @@ Conclusão para a IA: otimizar para SEO E AEO ao mesmo tempo. As táticas se sob
       `dateModified` e `citation` (CLT, Lei 12.506/2011) no WebApplication. _(Optou-se por
       Organization em vez de Person: não há autor pessoa-física credenciado real.)_
 - [x] **Organization** — identidade do site.
-- [ ] Validar com a Rich Results Test do Google.
-      _(JSON-LD validado como JSON; falta o teste oficial do Google, que exige URL no ar.)_
+- [x] Validar com a Rich Results Test do Google.
+      _(Testado no site no ar: WebApplication detectado como item válido (1 non-critical
+      issue: aggregateRating opcional — NÃO preencher sem avaliações reais). FAQPage não
+      aparece no teste por design: o Google restringe rich result de FAQ a sites gov/saúde
+      desde 2023; a marcação segue válida e útil para AEO.)_
 - [x] (Opcional) **HowTo** / **WebApplication** para a ferramenta, se aplicável.
       _(WebApplication incluído.)_
 
@@ -81,13 +84,19 @@ Conclusão para a IA: otimizar para SEO E AEO ao mesmo tempo. As táticas se sob
       _(Conteúdo principal é HTML estático no index.html; a calculadora é ilha React.)_
 - [x] **robots.txt** liberando crawlers de IA explicitamente:
       `GPTBot`, `Claude-Web`, `PerplexityBot`, `Google-Extended`. Não bloquear.
+      _(O Cloudflare bloqueava os bots de IA via "Managed content" injetado na borda;
+      o bloqueio foi desligado no painel. Verificado em produção: robots.txt sem bloco
+      Managed e com Allow: / para GPTBot, ClaudeBot, Google-Extended, Perplexity etc.)_
 - [ ] **Mobile-first** (maioria do tráfego é mobile).
       _(viewport e layout responsivo presentes; falta validar em dispositivos reais.)_
-- [ ] **sitemap.xml** + envio no Google Search Console.
-      _(sitemap.xml criado; falta enviar ao GSC após publicar.)_
+- [x] **sitemap.xml** + envio no Google Search Console.
+      _(sitemap enviado ao GSC com status "Success". Propriedade de Domínio prsites.com.br
+      verificada por TXT no DNS (Cloudflare).)_
 - [ ] **URLs limpas e descritivas** (ex.: /calculadora-rescisao-sem-justa-causa).
-- [ ] **HTTPS** obrigatório.
-      _(depende da hospedagem na publicação.)_
+      _(N/A no momento: SPA de página única. Só se aplica se criar páginas separadas por
+      modalidade no futuro.)_
+- [x] **HTTPS** obrigatório.
+      _(Site no ar com HTTPS/HTTP-2 atrás do Cloudflare; verificado retornando 200.)_
 - [x] **Meta title + meta description** otimizados por página.
 - [x] **Open Graph / Twitter cards** para compartilhamento.
 
