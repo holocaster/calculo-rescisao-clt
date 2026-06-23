@@ -1,0 +1,4 @@
+/** Arredonda para 2 casas decimais (centavos), half-up. */
+export function arredondar(valor: number): number {
+  return Math.round((valor + Number.EPSILON) * 100) / 100;
+}

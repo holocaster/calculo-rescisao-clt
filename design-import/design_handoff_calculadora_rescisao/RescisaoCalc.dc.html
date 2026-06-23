@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+</style>
+</helmet>
+<div style="font-family:'Public Sans',system-ui,-apple-system,sans-serif;background:#eef2f8;color:#13203a;min-height:100%;width:100%;line-height:1.5;-webkit-font-smoothing:antialiased;">
+
+  <header style="background:#1f5fd6;color:#fff;padding:22px 24px;">
+    <div style="max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:14px;">
+      <div style="width:42px;height:42px;border-radius:11px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;flex:none;">R$</div>
+      <div>
+        <div style="font-size:20px;font-weight:800;letter-spacing:-0.01em;">Calculadora de Rescisão</div>
+        <div style="font-size:13.5px;opacity:.82;font-weight:500;">Descubra quanto você tem a receber — de forma simples</div>
+      </div>
+    </div>
+  </header>
+
+  <div style="background:#e6ecf6;padding:16px 24px;border-bottom:1px solid #dde4ef;">
+    <div style="max-width:1040px;margin:0 auto;display:flex;justify-content:center;">
+      <div style="width:100%;max-width:728px;height:90px;border:1.5px dashed #b9c4d6;border-radius:8px;background:#f3f6fb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
+        <div style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;letter-spacing:.08em;color:#8390a6;text-transform:uppercase;">Espaço para anúncio</div>
+        <div style="font-family:ui-monospace,monospace;font-size:11px;color:#aab4c6;">leaderboard · 728 × 90</div>
+      </div>
+    </div>
+  </div>
+
+  <main style="max-width:1040px;margin:0 auto;padding:24px;display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start;">
+
+    <section style="flex:1.6 1 380px;background:#fff;border:1px solid #e4e9f2;border-radius:18px;padding:26px;box-shadow:0 1px 2px rgba(20,35,70,.04);">
+      <h2 style="margin:0 0 4px;font-size:17px;font-weight:800;color:#13203a;">Seus dados</h2>
+      <p style="margin:0 0 22px;font-size:13.5px;color:#7c889c;">Preencha os campos abaixo. O cálculo aparece ao lado automaticamente.</p>
+
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-weight:700;font-size:13.5px;margin-bottom:7px;color:#2b3a55;">Motivo da saída</label>
+        <select value="{{ tipo }}" onChange="{{ onTipo }}" style="width:100%;padding:13px 14px;border:1px solid #d6deec;border-radius:11px;font-size:16px;font-family:inherit;color:#13203a;background:#fff;outline:none;appearance:none;cursor:pointer;background-image:url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%231f5fd6\" stroke-width=\"3\"><path d=\"M6 9l6 6 6-6\"/></svg>');background-repeat:no-repeat;background-position:right 14px center;" style-focus="border-color:#1f5fd6;box-shadow:0 0 0 3px rgba(31,95,214,.14)">
+          <sc-for list="{{ tipoOptions }}" as="opt" hint-placeholder-count="5">
+            <option value="{{ opt.value }}">{{ opt.label }}</option>
+          </sc-for>
+        </select>
+        <div style="margin-top:8px;font-size:12.5px;color:#7c889c;background:#f4f7fc;border-radius:9px;padding:9px 11px;">{{ tipoDesc }}</div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-weight:700;font-size:13.5px;margin-bottom:7px;color:#2b3a55;">Salário bruto mensal</label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#7c889c;font-size:15px;font-weight:600;">R$</span>
+          <input type="number" min="0" step="0.01" inputmode="decimal" value="{{ salario }}" onInput="{{ onSalario }}" placeholder="0,00" style="width:100%;padding:13px 14px 13px 42px;border:1px solid #d6deec;border-radius:11px;font-size:16px;font-family:inherit;color:#13203a;background:#fff;outline:none;" style-focus="border-color:#1f5fd6;box-shadow:0 0 0 3px rgba(31,95,214,.14)">
+        </div>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px;">
+        <div style="flex:1 1 150px;">
+          <label style="display:block;font-weight:700;font-size:13.5px;margin-bottom:7px;color:#2b3a55;">Data de admissão</label>
+          <input type="date" value="{{ admissao }}" onInput="{{ onAdm }}" style="width:100%;padding:13px 14px;border:1px solid #d6deec;border-radius:11px;font-size:15px;font-family:inherit;color:#13203a;background:#fff;outline:none;" style-focus="border-color:#1f5fd6;box-shadow:0 0 0 3px rgba(31,95,214,.14)">
+        </div>
+        <div style="flex:1 1 150px;">
+          <label style="display:block;font-weight:700;font-size:13.5px;margin-bottom:7px;color:#2b3a55;">Último dia de trabalho</label>
+          <input type="date" value="{{ saida }}" onInput="{{ onSai }}" style="width:100%;padding:13px 14px;border:1px solid #d6deec;border-radius:11px;font-size:15px;font-family:inherit;color:#13203a;background:#fff;outline:none;" style-focus="border-color:#1f5fd6;box-shadow:0 0 0 3px rgba(31,95,214,.14)">
+        </div>
+      </div>
+
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-weight:700;font-size:13.5px;margin-bottom:7px;color:#2b3a55;">Saldo do FGTS <span style="font-weight:500;color:#9aa5b8;">(opcional)</span></label>
+        <div style="position:relative;">
+          <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#7c889c;font-size:15px;font-weight:600;">R$</span>
+          <input type="number" min="0" step="0.01" inputmode="decimal" value="{{ fgts }}" onInput="{{ onFgts }}" placeholder="0,00" style="width:100%;padding:13px 14px 13px 42px;border:1px solid #d6deec;border-radius:11px;font-size:16px;font-family:inherit;color:#13203a;background:#fff;outline:none;" style-focus="border-color:#1f5fd6;box-shadow:0 0 0 3px rgba(31,95,214,.14)">
+        </div>
+        <div style="margin-top:7px;font-size:12.5px;color:#7c889c;">Não sabe? Deixe em branco que fazemos uma estimativa.</div>
+      </div>
+
+      <label style="display:flex;gap:11px;align-items:flex-start;cursor:pointer;background:#f7f9fc;border:1px solid #e8edf5;border-radius:11px;padding:13px 14px;">
+        <input type="checkbox" checked="{{ feriasVencidas }}" onChange="{{ toggleFv }}" style="width:18px;height:18px;margin-top:1px;accent-color:#1f5fd6;flex:none;">
+        <span style="font-size:13.5px;color:#2b3a55;font-weight:500;">Tenho <strong>férias vencidas</strong> — um período completo que eu não tirei</span>
+      </label>
+    </section>
+
+    <aside style="flex:1 1 300px;max-width:344px;position:sticky;top:24px;align-self:flex-start;display:flex;flex-direction:column;gap:20px;">
+
+      <sc-if value="{{ valid }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <sc-if value="{{ isClassico }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border:1px solid #e4e9f2;border-radius:18px;overflow:hidden;box-shadow:0 6px 24px rgba(20,35,70,.07);">
+              <div style="padding:16px 20px;border-bottom:1px solid #eef1f6;font-weight:800;font-size:15px;color:#13203a;">Resumo da rescisão</div>
+              <div style="padding:6px 20px;">
+                <sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:13px 0;border-bottom:1px solid #f2f4f8;">
+                    <div>
+                      <div style="font-size:14px;font-weight:600;color:#2b3a55;">{{ it.label }}</div>
+                      <div style="font-size:11.5px;color:#9aa5b8;margin-top:1px;">{{ it.sub }}</div>
+                    </div>
+                    <div style="font-size:15px;font-weight:700;color:#13203a;white-space:nowrap;">{{ it.valorFmt }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="margin:6px 20px 20px;background:#eef4ff;border-radius:13px;padding:15px 16px;display:flex;justify-content:space-between;align-items:center;">
+                <div style="font-size:13px;font-weight:700;color:#1f5fd6;text-transform:uppercase;letter-spacing:.03em;">Total a receber</div>
+                <div style="font-size:22px;font-weight:800;color:#1f5fd6;">{{ totalFmt }}</div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isDestaque }}" hint-placeholder-val="{{ true }}">
+            <div style="background:linear-gradient(160deg,#2161db,#163e98);border-radius:18px;overflow:hidden;box-shadow:0 10px 30px rgba(22,62,152,.28);color:#fff;">
+              <div style="padding:24px 22px 20px;">
+                <div style="font-size:12.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.78;">Você tem a receber</div>
+                <div style="font-size:38px;font-weight:800;letter-spacing:-0.02em;margin:4px 0 2px;line-height:1.05;">{{ totalFmt }}</div>
+                <div style="font-size:13px;opacity:.8;font-weight:500;">{{ tipoLabel }}</div>
+              </div>
+              <div style="background:rgba(255,255,255,.08);padding:6px 22px 14px;">
+                <sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.12);">
+                    <div>
+                      <div style="font-size:13.5px;font-weight:600;">{{ it.label }}</div>
+                      <div style="font-size:11px;opacity:.62;margin-top:1px;">{{ it.sub }}</div>
+                    </div>
+                    <div style="font-size:14.5px;font-weight:700;white-space:nowrap;">{{ it.valorFmt }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasSaque }}">
+            <div style="margin-top:14px;background:#ecf8f1;border:1px solid #cdebd9;border-radius:13px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+              <div>
+                <div style="font-size:13px;font-weight:700;color:#157a4a;">FGTS liberado para saque</div>
+                <div style="font-size:11.5px;color:#5b9577;margin-top:1px;">valor do seu fundo, sacado à parte</div>
+              </div>
+              <div style="font-size:16px;font-weight:800;color:#157a4a;white-space:nowrap;">{{ saqueFmt }}</div>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:14px;font-size:12.5px;color:#7c889c;background:#f4f7fc;border-radius:11px;padding:12px 14px;">{{ nota }}</div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ notValid }}">
+        <div style="background:#fff;border:1.5px dashed #cfd8e6;border-radius:18px;padding:34px 24px;text-align:center;">
+          <div style="width:46px;height:46px;border-radius:50%;background:#eef4ff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:22px;">🧮</div>
+          <div style="font-weight:700;font-size:15px;color:#2b3a55;">Preencha seus dados</div>
+          <div style="font-size:13px;color:#8390a6;margin-top:5px;">Informe o salário e as datas para ver quanto você tem a receber.</div>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;justify-content:center;">
+        <div style="width:100%;max-width:300px;height:250px;border:1.5px dashed #b9c4d6;border-radius:10px;background:#f3f6fb;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;">
+          <div style="font-family:ui-monospace,monospace;font-size:11.5px;letter-spacing:.08em;color:#8390a6;text-transform:uppercase;">Espaço para anúncio</div>
+          <div style="font-family:ui-monospace,monospace;font-size:11px;color:#aab4c6;">retângulo · 300 × 250</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer style="max-width:1040px;margin:0 auto;padding:8px 24px 30px;">
+    <div style="font-size:12px;color:#9aa5b8;border-top:1px solid #e2e8f2;padding-top:16px;line-height:1.6;">
+      <strong style="color:#7c889c;">Aviso:</strong> os valores são brutos e estimados, sem os descontos de INSS e Imposto de Renda. O saldo do FGTS, quando não informado, é uma estimativa (8% do salário por mês trabalhado). Use como referência — para o valor exato, confirme com um contador ou advogado.
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:780,&quot;height&quot;:1120},&quot;variant&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;classico&quot;,&quot;destaque&quot;],&quot;default&quot;:&quot;classico&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    tipo: 'sem_justa_causa',
+    salario: '3000',
+    admissao: '2021-03-15',
+    saida: '2026-05-20',
+    fgts: '',
+    feriasVencidas: false,
+  };
+
+  parseDate(str){ if(!str) return null; const d = new Date(str + 'T00:00:00'); return isNaN(d.getTime()) ? null : d; }
+
+  countAvos(start, end){
+    if(!start || !end || end < start) return 0;
+    let count = 0, y = start.getFullYear(), m = start.getMonth();
+    while(y < end.getFullYear() || (y === end.getFullYear() && m <= end.getMonth())){
+      const mStart = new Date(y, m, 1), mEnd = new Date(y, m + 1, 0);
+      const ws = mStart < start ? start : mStart;
+      const we = mEnd > end ? end : mEnd;
+      const days = Math.round((we - ws) / 86400000) + 1;
+      if(days >= 15) count++;
+      m++; if(m > 11){ m = 0; y++; }
+    }
+    return Math.min(count, 12);
+  }
+
+  lastAnniversary(adm, sai){
+    let cand = new Date(sai.getFullYear(), adm.getMonth(), adm.getDate());
+    if(cand > sai) cand = new Date(sai.getFullYear() - 1, adm.getMonth(), adm.getDate());
+    if(cand < adm) cand = new Date(adm);
+    return cand;
+  }
+
+  renderVals(){
+    const s = this.state;
+    const variant = this.props.variant || 'classico';
+    const fmt = v => (v || 0).toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+
+    const tipoOptions = [
+      { value:'sem_justa_causa', label:'Demissão sem justa causa' },
+      { value:'acordo',          label:'Rescisão por acordo (comum acordo)' },
+      { value:'pedido_demissao', label:'Pedido de demissão' },
+      { value:'justa_causa',     label:'Demissão por justa causa' },
+      { value:'experiencia',     label:'Fim do contrato de experiência' },
+    ];
+    const meta = {
+      sem_justa_causa: { label:'Demissão sem justa causa', desc:'A empresa te dispensou sem motivo grave. É o cenário com mais direitos.', nota:'Cenário com todos os direitos: aviso prévio, multa de 40% e saque integral do FGTS.' },
+      acordo:          { label:'Rescisão por acordo',       desc:'Acordo entre as duas partes para encerrar o contrato.',                  nota:'No acordo, o aviso indenizado e a multa do FGTS saem pela metade (20%), e o saque é limitado a 80%.' },
+      pedido_demissao: { label:'Pedido de demissão',         desc:'Você pediu para sair da empresa.',                                       nota:'Você não tem direito à multa de 40% nem ao saque do FGTS, e deve cumprir (ou ter descontado) o aviso prévio.' },
+      justa_causa:     { label:'Demissão por justa causa',   desc:'Desligamento por falta grave do empregado.',                             nota:'Na justa causa você recebe apenas o saldo de salário e as férias vencidas, se houver.' },
+      experiencia:     { label:'Fim do contrato de experiência', desc:'Contrato de experiência encerrado no prazo combinado.',              nota:'Encerrado no prazo: não há aviso prévio nem multa, mas o FGTS pode ser sacado.' },
+    };
+    const rulesMap = {
+      sem_justa_causa: { aviso:'full', decimo:true,  feriasProp:true,  multa:0.40, saque:1   },
+      acordo:          { aviso:'half', decimo:true,  feriasProp:true,  multa:0.20, saque:0.8 },
+      pedido_demissao: { aviso:'none', decimo:true,  feriasProp:true,  multa:0,    saque:0   },
+      justa_causa:     { aviso:'none', decimo:false, feriasProp:false, multa:0,    saque:0   },
+      experiencia:     { aviso:'none', decimo:true,  feriasProp:true,  multa:0,    saque:1   },
+    };
+
+    const salario = parseFloat(s.salario) || 0;
+    const adm = this.parseDate(s.admissao);
+    const sai = this.parseDate(s.saida);
+    const fgtsInput = parseFloat(s.fgts) || 0;
+    const valid = salario > 0 && !!adm && !!sai && sai > adm;
+
+    let items = [], total = 0, saqueFmt = null, hasSaque = false;
+
+    if(valid){
+      const r = rulesMap[s.tipo];
+      const totalDays = Math.round((sai - adm) / 86400000) + 1;
+      const fullYears = Math.floor(totalDays / 365);
+      const totalMonths = Math.max(1, Math.round(totalDays / 30));
+      const diaria = salario / 30;
+
+      const diasMes = sai.getDate();
+      const saldo = diaria * diasMes;
+      items.push({ label:'Saldo de salário', valorFmt:fmt(saldo), sub: diasMes + ' dias no mês' });
+      total += saldo;
+
+      if(r.aviso !== 'none'){
+        const dias = Math.min(90, 30 + 3 * fullYears);
+        const f = r.aviso === 'half' ? 0.5 : 1;
+        const av = diaria * dias * f;
+        items.push({ label:'Aviso prévio indenizado' + (f < 1 ? ' (50%)' : ''), valorFmt:fmt(av), sub: dias + ' dias' });
+        total += av;
+      }
+      if(r.decimo){
+        const janeiro = new Date(sai.getFullYear(), 0, 1);
+        const inicio13 = adm > janeiro ? adm : janeiro;
+        const avos = this.countAvos(inicio13, sai);
+        const d13 = (salario / 12) * avos;
+        items.push({ label:'13º salário proporcional', valorFmt:fmt(d13), sub: avos + '/12 avos' });
+        total += d13;
+      }
+      if(r.feriasProp){
+        const avosF = this.countAvos(this.lastAnniversary(adm, sai), sai);
+        const fp = (salario / 12) * avosF * (4/3);
+        items.push({ label:'Férias proporcionais + 1/3', valorFmt:fmt(fp), sub: avosF + '/12 avos' });
+        total += fp;
+      }
+      if(s.feriasVencidas){
+        const fv = salario * (4/3);
+        items.push({ label:'Férias vencidas + 1/3', valorFmt:fmt(fv), sub:'período não usufruído' });
+        total += fv;
+      }
+      const fgtsTotal = fgtsInput > 0 ? fgtsInput : 0.08 * salario * totalMonths;
+      if(r.multa > 0){
+        const mu = fgtsTotal * r.multa;
+        items.push({ label:'Multa de ' + Math.round(r.multa * 100) + '% do FGTS', valorFmt:fmt(mu), sub:'sobre o saldo do FGTS' });
+        total += mu;
+      }
+      if(r.saque > 0){
+        hasSaque = true;
+        saqueFmt = fmt(fgtsTotal * r.saque);
+      }
+    }
+
+    return {
+      tipo: s.tipo, tipoOptions,
+      tipoDesc: meta[s.tipo].desc, tipoLabel: meta[s.tipo].label, nota: meta[s.tipo].nota,
+      salario: s.salario, admissao: s.admissao, saida: s.saida, fgts: s.fgts,
+      feriasVencidas: s.feriasVencidas,
+      variant, isClassico: variant === 'classico', isDestaque: variant === 'destaque',
+      valid, notValid: !valid, items, totalFmt: fmt(total), hasSaque, saqueFmt,
+      onTipo: e => this.setState({ tipo: e.target.value }),
+      onSalario: e => this.setState({ salario: e.target.value }),
+      onAdm: e => this.setState({ admissao: e.target.value }),
+      onSai: e => this.setState({ saida: e.target.value }),
+      onFgts: e => this.setState({ fgts: e.target.value }),
+      toggleFv: () => this.setState(st => ({ feriasVencidas: !st.feriasVencidas })),
+    };
+  }
+}
+</script>
+</body>
+</html>
