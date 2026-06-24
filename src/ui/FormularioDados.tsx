@@ -147,7 +147,7 @@ export function FormularioDados({ form, update, tipoDesc, erros }: Props) {
           onChange={(e) => update({ diasFeriasVencidas: e.target.value })}
         />
         <p className="field__hint">
-          Um período de 12 meses não usufruido vale 30 dias. Se você já tirou parte das
+          Um período de 12 meses não usufruído vale 30 dias. Se você já tirou parte das
           férias (fracionamento), informe apenas o saldo de dias que ainda falta usufruir.
         </p>
       </div>

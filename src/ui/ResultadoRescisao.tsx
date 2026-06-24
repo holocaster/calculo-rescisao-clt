@@ -18,7 +18,7 @@ export function ResultadoRescisao({ view }: Props) {
 
           <ul className="verbas">
             {view.items.map((it) => (
-              <li className="verba" key={it.label}>
+              <li className="verba" key={`${it.label}-${it.sub}`}>
                 <div className="verba__info">
                   <span className="verba__label">{it.label}</span>
                   <span className="verba__sub">{it.sub}</span>
@@ -34,20 +34,12 @@ export function ResultadoRescisao({ view }: Props) {
                 Ver com descontos (INSS / IRRF)
               </summary>
               <div className="descontos__body">
-                <div className="descontos__linha">
-                  <span>INSS</span>
-                  <span>- {view.inssFmt}</span>
-                </div>
-                <div className="descontos__linha">
-                  <span>IRRF</span>
-                  <span>- {view.irrfFmt}</span>
-                </div>
-                {view.temAvisoNaoCumprido && (
-                  <div className="descontos__linha">
-                    <span>Aviso prévio não cumprido</span>
-                    <span>- {view.avisoNaoCumpridoFmt}</span>
+                {view.descontos.map((d) => (
+                  <div className="descontos__linha" key={d.label}>
+                    <span>{d.label}</span>
+                    <span>- {d.valorFmt}</span>
                   </div>
-                )}
+                ))}
                 <div className="descontos__linha descontos__linha--liquido">
                   <span>Líquido estimado</span>
                   <span>{view.liquidoFmt}</span>

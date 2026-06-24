@@ -25,6 +25,9 @@ npm run lint     # eslint
 
 Sempre validar com `npm test`, `npm run build` e `npm run lint` antes de concluir.
 
+**Antes de cada commit/push:** subir a versão em `package.json` (SemVer) e registrar as
+mudanças no `CHANGELOG.md`.
+
 ## Escopo do cálculo
 
 Modalidades: sem justa causa, pedido de demissão, justa causa, acordo (484-A) e fim de
@@ -39,6 +42,11 @@ seguro-desemprego. Resultados são **estimativas** (há disclaimer na página).
 - Aviso prévio não cumprido (pedido de demissão) usa 30 dias fixos — ver ADR 0004.
 - Anúncios: flag `ANUNCIOS_ATIVOS` em `src/ui/EspacoAnuncio.tsx` (hoje `false`).
 - Valores monetários usam máscara pt-BR (`src/ui/mascaras.ts`).
+- Baseline de verificação com dados reais: teste "regressão com TRCT real (Banco Pan...)"
+  em `calculadora.test.ts` (pedido de demissão, admissão 13/07/2021, saída 19/02/2026,
+  salário 15.246,19 → 13º 2/12 = 2.541,03; férias prop. 7/12 = 8.893,61 + 1/3 2.964,54;
+  férias vencidas 15 dias = 10.164,12). Médias de variáveis (HE, sobreaviso) e PLR ficam
+  fora do escopo e explicam diferenças de INSS/IRRF/saldo num TRCT real.
 
 ## SEO
 

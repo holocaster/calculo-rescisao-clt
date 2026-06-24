@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { calcular } from '../dominio/calculadora';
 import {
+  descricaoDesconto,
   descricaoVerba,
   totais,
-  valorDesconto,
   type Rescisao,
-  type TipoVerba,
+  type Verba,
 } from '../dominio/tipos';
 import { mapaModalidade, tipoOptions, type TipoForm } from './labels';
 import { parseMoeda } from './mascaras';
@@ -37,14 +37,75 @@ export const estadoInicial: FormState = {
 const fmt = (v: number): string =>
   (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-const subVerba: Record<TipoVerba, string> = {
-  SALDO_SALARIO: 'proporcional aos dias trabalhados',
-  DECIMO_TERCEIRO_PROPORCIONAL: 'avos do ano',
-  FERIAS_PROPORCIONAIS: 'período aquisitivo + 1/3',
-  FERIAS_VENCIDAS: 'período não usufruído + 1/3',
-  AVISO_PREVIO_INDENIZADO: 'projeta a data de saída',
-  MULTA_FGTS: 'sobre o saldo do FGTS',
-};
+/** Sub-legenda dinâmica de cada verba a partir da memória de cálculo (detalhe). */
+function subVerba(v: Verba): string {
+  const d = v.detalhe;
+  switch (v.tipo) {
+    case 'SALDO_SALARIO':
+      return d?.dias !== undefined
+        ? `${d.dias} de 30 dias trabalhados`
+        : 'proporcional aos dias trabalhados';
+    case 'DECIMO_TERCEIRO_PROPORCIONAL':
+      return d?.avos !== undefined ? `${d.avos}/12 avos` : 'avos do ano';
+    case 'FERIAS_PROPORCIONAIS':
+      return d?.avos !== undefined ? `${d.avos}/12 avos` : 'período aquisitivo';
+    case 'FERIAS_VENCIDAS':
+      return d?.dias !== undefined
+        ? `${d.dias} dias não usufruídos`
+        : 'período não usufruído';
+    case 'AVISO_PREVIO_INDENIZADO': {
+      if (d?.dias === undefined) return 'projeta a data de saída';
+      const dias = Math.round(d.dias);
+      if (!d.avisoProporcional || d.avisoBase === undefined) return `${dias} dias`;
+      const cheio = d.avisoBase + d.avisoProporcional;
+      // Explica o proporcional (3 dias/ano) quando os anos batem com o teto.
+      const anos = d.avisoAnos;
+      const proporcional =
+        anos !== undefined && d.avisoProporcional === 3 * anos
+          ? `3 dias/ano × ${anos} ${anos === 1 ? 'ano' : 'anos'}`
+          : `${d.avisoProporcional} dias`;
+      const composicao = `${d.avisoBase} + ${proporcional}`;
+      // No acordo (484-A) os dias pagos são metade da composição legal.
+      return d.dias < cheio
+        ? `${dias} dias (metade de ${composicao})`
+        : `${dias} dias (${composicao})`;
+    }
+    case 'MULTA_FGTS':
+      if (d?.percentual !== undefined && d.baseFgts !== undefined) {
+        const pct = Math.round(d.percentual * 100);
+        const estimado = d.fgtsEstimado ? ' (estimado)' : '';
+        return `${pct}% sobre ${fmt(d.baseFgts)}${estimado}`;
+      }
+      return 'sobre o saldo do FGTS';
+  }
+}
+
+/**
+ * Itens de exibição de uma verba. Férias geram duas linhas: a base e o 1/3
+ * constitucional em linha própria (base + 1/3 = valor da verba).
+ */
+function itensDaVerba(v: Verba): ItemResultado[] {
+  const ehFerias =
+    v.tipo === 'FERIAS_PROPORCIONAIS' || v.tipo === 'FERIAS_VENCIDAS';
+  const principal: ItemResultado = {
+    label: descricaoVerba[v.tipo],
+    sub: subVerba(v),
+    valorFmt: fmt(ehFerias && v.detalhe?.base !== undefined ? v.detalhe.base : v.valor),
+  };
+  if (ehFerias) {
+    const ref =
+      v.tipo === 'FERIAS_PROPORCIONAIS' ? 'férias proporcionais' : 'férias vencidas';
+    return [
+      principal,
+      {
+        label: '1/3 constitucional',
+        sub: `sobre as ${ref}`,
+        valorFmt: fmt(v.detalhe?.terco ?? 0),
+      },
+    ];
+  }
+  return [principal];
+}
 
 /** Aplica máscara dd/mm/aaaa enquanto o usuário digita. */
 export function maskData(valor: string): string {
@@ -96,6 +157,11 @@ export interface ItemResultado {
   valorFmt: string;
 }
 
+export interface ItemDesconto {
+  label: string;
+  valorFmt: string;
+}
+
 export interface ResultadoView {
   valid: boolean;
   tipoLabel: string;
@@ -103,10 +169,7 @@ export interface ResultadoView {
   nota: string;
   items: ItemResultado[];
   totalBrutoFmt: string;
-  inssFmt: string;
-  irrfFmt: string;
-  avisoNaoCumpridoFmt: string;
-  temAvisoNaoCumprido: boolean;
+  descontos: ItemDesconto[];
   descontosFmt: string;
   liquidoFmt: string;
   temDescontos: boolean;
@@ -129,10 +192,7 @@ export function useCalculoRescisao(form: FormState): ResultadoView {
       nota: opcao.nota,
       items: [],
       totalBrutoFmt: fmt(0),
-      inssFmt: fmt(0),
-      irrfFmt: fmt(0),
-      avisoNaoCumpridoFmt: fmt(0),
-      temAvisoNaoCumprido: false,
+      descontos: [],
       descontosFmt: fmt(0),
       liquidoFmt: fmt(0),
       temDescontos: false,
@@ -162,19 +222,11 @@ export function useCalculoRescisao(form: FormState): ResultadoView {
 
     const items = resultado.verbas
       .filter((v) => v.valor > 0)
-      .map((v) => ({
-        label: descricaoVerba[v.tipo],
-        sub: subVerba[v.tipo],
-        valorFmt: fmt(v.valor),
-      }));
+      .flatMap(itensDaVerba);
 
-    const inss =
-      valorDesconto(resultado, 'INSS_SALARIO') +
-      valorDesconto(resultado, 'INSS_DECIMO_TERCEIRO');
-    const irrf =
-      valorDesconto(resultado, 'IRRF_SALARIO') +
-      valorDesconto(resultado, 'IRRF_DECIMO_TERCEIRO');
-    const avisoNaoCumprido = valorDesconto(resultado, 'AVISO_PREVIO_NAO_CUMPRIDO');
+    const descontos = resultado.descontos
+      .filter((d) => d.valor > 0)
+      .map((d) => ({ label: descricaoDesconto[d.tipo], valorFmt: fmt(d.valor) }));
 
     return {
       valid: true,
@@ -183,10 +235,7 @@ export function useCalculoRescisao(form: FormState): ResultadoView {
       nota: opcao.nota,
       items,
       totalBrutoFmt: fmt(t.bruto),
-      inssFmt: fmt(inss),
-      irrfFmt: fmt(irrf),
-      avisoNaoCumpridoFmt: fmt(avisoNaoCumprido),
-      temAvisoNaoCumprido: avisoNaoCumprido > 0,
+      descontos,
       descontosFmt: fmt(t.descontos),
       liquidoFmt: fmt(t.liquido),
       temDescontos: t.descontos > 0,

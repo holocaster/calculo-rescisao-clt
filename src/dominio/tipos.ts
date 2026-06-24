@@ -18,8 +18,8 @@ export type TipoVerba =
 export const descricaoVerba: Record<TipoVerba, string> = {
   SALDO_SALARIO: 'Saldo de salário',
   DECIMO_TERCEIRO_PROPORCIONAL: '13º proporcional',
-  FERIAS_PROPORCIONAIS: 'Férias proporcionais + 1/3',
-  FERIAS_VENCIDAS: 'Férias vencidas + 1/3',
+  FERIAS_PROPORCIONAIS: 'Férias proporcionais',
+  FERIAS_VENCIDAS: 'Férias vencidas',
   AVISO_PREVIO_INDENIZADO: 'Aviso prévio indenizado',
   MULTA_FGTS: 'Multa do FGTS',
 };
@@ -50,10 +50,35 @@ export interface Rescisao {
   dependentes?: number;
 }
 
-/** Uma verba apurada, com seu valor bruto. */
+/** Memória de cálculo: componentes numéricos que originaram o valor da verba. */
+export interface DetalheVerba {
+  /** Dias considerados (saldo de salário, férias vencidas, aviso indenizado). */
+  dias?: number;
+  /** Avos/meses considerados (13º, férias proporcionais). */
+  avos?: number;
+  /** Valor das férias sem o 1/3 constitucional. */
+  base?: number;
+  /** Valor do 1/3 constitucional sobre as férias. */
+  terco?: number;
+  /** Aviso prévio: dias fixos da base legal (30). */
+  avisoBase?: number;
+  /** Aviso prévio: dias proporcionais (3 por ano completo, teto 90 no total). */
+  avisoProporcional?: number;
+  /** Aviso prévio: anos completos de contrato que geraram o proporcional. */
+  avisoAnos?: number;
+  /** Percentual da multa do FGTS (0.4 = 40%). */
+  percentual?: number;
+  /** Saldo do FGTS usado como base da multa. */
+  baseFgts?: number;
+  /** True quando o saldo do FGTS foi estimado (usuário não informou). */
+  fgtsEstimado?: boolean;
+}
+
+/** Uma verba apurada, com seu valor bruto e a memória de cálculo. */
 export interface Verba {
   tipo: TipoVerba;
   valor: number;
+  detalhe?: DetalheVerba;
 }
 
 export type TipoDesconto =
