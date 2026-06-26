@@ -83,6 +83,14 @@ indenizatórias (aviso indenizado, férias indenizadas, multa FGTS) são isentas
 Valor mensal único informado pelo usuário (comissões/HE/adicionais habituais) que soma à
 base de 13º, férias e aviso. Não reconstrói histórico mês a mês (decisão de MVP).
 
+### Saída
+
+**Demonstrativo de cálculo**:
+Documento imprimível (PDF via "salvar como" do navegador) que resume UMA rescisão: ecoa
+os dados informados, lista as verbas e descontos, o total/líquido, o FGTS para saque e o
+disclaimer. É um resumo para registro pessoal, NÃO um documento oficial.
+_Avoid_: "comprovante" (sugere documento oficial/quitação), "relatório".
+
 ## Flagged ambiguities
 
 - **"Rescisão de contrato"** → resolvido para **rescisão trabalhista CLT** (não civil).

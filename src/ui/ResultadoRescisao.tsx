@@ -67,6 +67,16 @@ export function ResultadoRescisao({ view }: Props) {
         </div>
       )}
 
+      {view.valid && (
+        <button
+          type="button"
+          className="btn-imprimir no-print"
+          onClick={() => window.print()}
+        >
+          Imprimir / Salvar PDF
+        </button>
+      )}
+
       {view.valid && <p className="nota">{view.nota}</p>}
 
       <EspacoAnuncio size="retangulo" />

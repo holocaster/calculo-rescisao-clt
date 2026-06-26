@@ -3,6 +3,14 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/);
 versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.3.0] - 2026-06-26
+
+### Adicionado
+- Demonstrativo de cálculo imprimível: botão "Imprimir / Salvar PDF" no resultado gera um
+  documento (via "salvar como PDF" do navegador) com os dados informados, as verbas,
+  os descontos/líquido, o FGTS para saque e o disclaimer. O restante da página é ocultado
+  na impressão via `@media print`.
+
 ## [0.2.0] - 2026-06-24
 
 ### Adicionado

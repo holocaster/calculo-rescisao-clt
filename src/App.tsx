@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FormularioDados } from './ui/FormularioDados';
 import { ResultadoRescisao } from './ui/ResultadoRescisao';
+import { Demonstrativo } from './ui/Demonstrativo';
 import {
   estadoInicial,
   useCalculoRescisao,
@@ -18,14 +19,17 @@ export default function App() {
   const erros = validarFormulario(form);
 
   return (
-    <div className="main">
-      <FormularioDados
-        form={form}
-        update={update}
-        tipoDesc={view.tipoDesc}
-        erros={erros}
-      />
-      <ResultadoRescisao view={view} />
-    </div>
+    <>
+      <div className="main">
+        <FormularioDados
+          form={form}
+          update={update}
+          tipoDesc={view.tipoDesc}
+          erros={erros}
+        />
+        <ResultadoRescisao view={view} />
+      </div>
+      {view.valid && <Demonstrativo form={form} view={view} />}
+    </>
   );
 }

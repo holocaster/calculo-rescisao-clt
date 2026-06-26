@@ -623,3 +623,142 @@ body {
   font-size: 12px;
   color: var(--texto-4);
 }
+
+/* Botao de impressao */
+.btn-imprimir {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--borda-input);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--azul);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-imprimir:hover {
+  border-color: var(--azul);
+  background: #f4f7fc;
+}
+
+/* Demonstrativo: documento imprimivel, oculto na tela (so aparece na impressao). */
+.demonstrativo {
+  display: none;
+}
+.demo__header {
+  border-bottom: 2px solid var(--azul);
+  padding-bottom: 10px;
+  margin-bottom: 18px;
+}
+.demo__brand {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--azul);
+}
+.demo__titulo {
+  font-size: 20px;
+  margin: 4px 0 2px;
+}
+.demo__meta {
+  font-size: 12px;
+  color: #444;
+  margin: 0;
+}
+.demo__bloco {
+  margin-bottom: 18px;
+}
+.demo__bloco-titulo {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin: 0 0 8px;
+}
+.demo__dados {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 28px;
+}
+.demo__dados > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px dotted #ddd;
+  padding-bottom: 3px;
+}
+.demo__dados dt {
+  color: #555;
+  margin: 0;
+}
+.demo__dados dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+.demo__tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+.demo__tabela td {
+  padding: 7px 0;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+  font-size: 13px;
+}
+.demo__val {
+  text-align: right;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.demo__sub {
+  display: block;
+  font-size: 10.5px;
+  color: #777;
+  font-weight: 400;
+}
+.demo__total td {
+  border-top: 2px solid #333;
+  border-bottom: none;
+  font-weight: 800;
+  font-size: 14px;
+  padding-top: 9px;
+}
+.demo__rodape {
+  margin-top: 22px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  font-size: 10.5px;
+  color: #666;
+}
+.demo__rodape p {
+  margin: 0 0 4px;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  /* Remove todo o resto do fluxo: display:none nao gera paginas em branco
+     (visibility:hidden manteria a altura da pagina e paginaria em branco). */
+  .page,
+  .no-print {
+    display: none !important;
+  }
+  .demonstrativo {
+    display: block;
+    color: #000;
+  }
+  @page {
+    margin: 16mm;
+  }
+}
