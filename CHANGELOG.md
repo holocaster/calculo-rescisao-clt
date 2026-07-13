@@ -3,6 +3,13 @@
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/);
 versionamento [SemVer](https://semver.org/lang/pt-BR/).
 
+## [0.3.1] - 2026-07-13
+
+### Corrigido
+- `dateModified` (schema WebApplication) e `lastmod` (sitemap.xml) estavam com data
+  anterior à última mudança de conteúdo real (2026-06-23 em vez de 2026-06-26, quando
+  saiu o demonstrativo em PDF da v0.3.0). Corrigidos para refletir a data verdadeira.
+
 ## [0.3.0] - 2026-06-26
 
 ### Adicionado
